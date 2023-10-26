@@ -2,7 +2,7 @@
 name = "nutp"
 version = "0.1.0"
 edition = "2021"
-licence = "MIT"
+license = "MIT"
 keywords = ["UART", "no_std"]
 repository = "https://github.com/Cethannel/nutp"
 description = "The New UART Transfer Protocol"
