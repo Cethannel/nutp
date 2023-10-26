@@ -5,6 +5,7 @@ edition = "2021"
 licence = "MIT"
 keywords = ["UART", "no_std"]
 repository = "https://github.com/Cethannel/nutp"
+description = "The New UART Transfer Protocol"
 readme = "README"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
