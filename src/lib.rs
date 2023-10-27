@@ -87,8 +87,10 @@ impl Message {
             vec![0x1, 0x2],
             u16_to_u8s(self.header.to_bytes().len() as u16).to_vec(),
             self.header.to_bytes().to_vec(),
+            vec![b'\0'],
             vec![0x3, 0x2],
             self.body.to_bytes().to_vec(),
+            vec![b'\0'],
             vec![0x4],
         ]
         .into_iter()
