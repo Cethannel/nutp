@@ -72,8 +72,8 @@ impl MessageBuilder {
 
 #[derive(Clone, PartialEq)]
 pub struct Message {
-    header: CString,
-    body: CString,
+    pub header: CString,
+    pub body: CString,
 }
 
 impl Debug for Message {
@@ -104,7 +104,7 @@ impl Message {
         .collect()
     }
 
-    pub fn from_bytes(input: Vec<u8>) -> Option<Self> {
+    pub fn from_bytes(input: &[u8]) -> Option<Self> {
         if input[0] != 0x1 || input[1] != 0x2 || input[input.len() - 1] != 0x4 {
             return None;
         }
@@ -140,7 +140,7 @@ mod test {
             .unwrap();
 
         let bytes = message.clone().to_bytes();
-        let message2 = super::Message::from_bytes(bytes).unwrap();
+        let message2 = super::Message::from_bytes(&bytes).unwrap();
 
         assert_eq!(message, message2);
     }
