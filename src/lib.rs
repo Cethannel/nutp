@@ -32,6 +32,12 @@ pub struct MessageBuilder {
     body: Option<CString>,
 }
 
+impl Default for MessageBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MessageBuilder {
     pub fn new() -> Self {
         Self {
@@ -74,7 +80,7 @@ impl Debug for Message {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_fmt(format_args!(
             "[0x1][0x2][{}][{:?}][0x3][0x2][{:?}][0x4]",
-            (&self.header).to_bytes().len(),
+            self.header.to_bytes().len(),
             self.header,
             self.body
         ))
