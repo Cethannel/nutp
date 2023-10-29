@@ -64,7 +64,7 @@ impl MessageBuilder {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub struct Message {
     header: CString,
     body: CString,
@@ -96,5 +96,46 @@ impl Message {
         .into_iter()
         .flatten()
         .collect()
+    }
+
+    pub fn from_bytes(input: Vec<u8>) -> Option<Self> {
+        if input[0] != 0x1 || input[1] != 0x2 || input[input.len() - 1] != 0x4 {
+            return None;
+        }
+
+        let mut header_len_bytes = [0u8; 2];
+        header_len_bytes.copy_from_slice(&input[2..4]);
+        let header_len = u16::from_le_bytes(header_len_bytes) as usize;
+
+        let header = CString::new(input[4..4 + header_len].to_vec()).ok()?;
+
+        let body = CString::new(input[7 + header_len..input.len() - 2].to_vec()).ok()?;
+
+        let message = Self { header, body };
+
+        Some(message)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn test_bytes() {
+        let message = super::MessageBuilder::new()
+            .add_header(
+                alloc::ffi::CString::new("Content-Type").unwrap(),
+                alloc::ffi::CString::new("text/html").unwrap(),
+            )
+            .set_body(
+                alloc::ffi::CString::new("<html><body><h1>Hello, world!</h1></body></html>")
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+
+        let bytes = message.clone().to_bytes();
+        let message2 = super::Message::from_bytes(bytes).unwrap();
+
+        assert_eq!(message, message2);
     }
 }
