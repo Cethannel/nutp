@@ -12,3 +12,4 @@ readme = "README"
 
 [dependencies]
 hashbrown = "0.14.2"
+heapless = { version = "0.7.16", features = ["ufmt-write"] }
