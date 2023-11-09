@@ -2,8 +2,6 @@
 
 use core::fmt::Debug;
 
-use hashbrown::HashMap;
-
 use heapless::{String, Vec};
 
 pub const MAX_BODY_SIZE: usize = 4 * 1024;
@@ -28,7 +26,7 @@ const fn u16_to_u8s(input: u16) -> [u8; 2] {
 
 #[derive(Debug)]
 pub struct MessageBuilder {
-    headers: HashMap<String<128>, String<128>>,
+    headers: Vec<(String<32>, String<128>), 16>,
     body: Option<String<MAX_BODY_SIZE>>,
 }
 
@@ -41,14 +39,14 @@ impl Default for MessageBuilder {
 impl MessageBuilder {
     pub fn new() -> Self {
         Self {
-            headers: HashMap::new(),
+            headers: Vec::new(),
             body: None,
         }
     }
 
-    pub fn add_header(mut self, key: String<128>, value: String<128>) -> Self {
-        self.headers.insert(key, value);
-        self
+    pub fn add_header(mut self, key: String<32>, value: String<128>) -> Option<Self> {
+        self.headers.push((key, value)).ok()?;
+        Some(self)
     }
 
     pub fn set_body(mut self, body: String<MAX_BODY_SIZE>) -> Self {
