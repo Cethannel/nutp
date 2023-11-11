@@ -169,6 +169,7 @@ mod test {
                 String::from_str("Content-Type").unwrap(),
                 String::from_str("text/html").unwrap(),
             )
+            .unwrap()
             .set_body(String::from_str("<html><body><h1>Hello, world!</h1></body></html>").unwrap())
             .build()
             .unwrap();
