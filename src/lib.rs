@@ -4,7 +4,7 @@ use core::fmt::Debug;
 
 use heapless::{String, Vec};
 
-pub const MAX_BODY_SIZE: usize = 4 * 1024;
+pub const MAX_BODY_SIZE: usize = 2 * 1024;
 
 /// Converts a u16 to array of 2 u8s corresponding to the upper and lower 8
 /// bits respectively
